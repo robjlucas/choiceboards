@@ -3,6 +3,7 @@ var initted = false;
 var container = null;
 var effectiveWidth;
 var width = 200;
+var currentlySelected = null;
 //https://ssl.gstatic.com/dictionary/static/sounds/oxford/myword--_gb_1.mp3    is an mp3 of the word "myword"   
 
 const choiceBoard = [
@@ -34,6 +35,11 @@ const choiceBoard = [
 const itemClicked = function(item, image, coords) {
     console.log("Clicked " + item.id);
 
+    if (currentlySelected == item.id) {
+        console.log("Reclicked " + item.id);
+        console.log("Transition to child board?");
+    }
+
     navigator.vibrate(200); //miliseconds to vibrate for
 
     var border = container.append("rect")
@@ -60,6 +66,8 @@ const itemClicked = function(item, image, coords) {
 
     
     __("#" + item.id).stop().start()
+
+    currentlySelected = item.id; 
 }
 
 const initBoard = function() {
@@ -89,8 +97,6 @@ const produceCoords = function() {
         {x: 50, y: 450},
         {x: 450, y: 450}
     ];
-
-
 }
 
 
@@ -121,23 +127,24 @@ const initSounds = function() {
 };
 
 
+const loadBoard = function() {
+    // TODO: clear existing board, useful for loading child boards etc. 
 
-container = initD3();
-
-
+    initSounds();    
+    initBoard();
+}
 
 const init = function() {
     if (initted) {
-        //controls.mouseDown(event);
         return;
     }
     initted = true;
 
-    initSounds();
-    
-    initBoard();
+
+    // TODO load appropritate board, currently hardcoded. 
+    loadBoard();
 };
 
-const delayedInit = function() {
-  window.setTimeout(init, 100);
-};
+container = initD3();       
+window.setTimeout(init, 100);
+
