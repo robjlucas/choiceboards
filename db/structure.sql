@@ -9,17 +9,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: user_role; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.user_role AS ENUM (
-    'customer',
-    'admin'
-);
-
-
 SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
@@ -31,6 +23,40 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: choiceboards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.choiceboards (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    name character varying,
+    image_uid character varying,
+    sound_uid character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: choiceboards_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.choiceboards_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: choiceboards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.choiceboards_id_seq OWNED BY public.choiceboards.id;
 
 
 --
@@ -50,10 +76,9 @@ CREATE TABLE public.users (
     id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    oldid integer,
     first_name character varying,
     last_name character varying,
-    role public.user_role NOT NULL,
+    role character varying NOT NULL,
     email character varying,
     encrypted_password character varying(128),
     confirmation_token character varying(128),
@@ -81,6 +106,13 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: choiceboards id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.choiceboards ALTER COLUMN id SET DEFAULT nextval('public.choiceboards_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -93,6 +125,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: choiceboards choiceboards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.choiceboards
+    ADD CONSTRAINT choiceboards_pkey PRIMARY KEY (id);
 
 
 --
@@ -112,6 +152,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_choiceboards_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_choiceboards_on_user_id ON public.choiceboards USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -126,12 +173,21 @@ CREATE INDEX index_users_on_remember_token ON public.users USING btree (remember
 
 
 --
+-- Name: choiceboards fk_rails_5f331d2dd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.choiceboards
+    ADD CONSTRAINT fk_rails_5f331d2dd6 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20210228215638');
+('20210228215638'),
+('20210307195018');
 
 

@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Choiceboards</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Name</th>
+      <th>Image uid</th>
+      <th>Sound uid</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @choiceboards.each do |choiceboard| %>
+      <tr>
+        <td><%= choiceboard.user_id_id %></td>
+        <td><%= choiceboard.name %></td>
+        <td><%= choiceboard.image_uid %></td>
+        <td><%= choiceboard.sound_uid %></td>
+        <td><%= link_to 'Show', choiceboard %></td>
+        <td><%= link_to 'Edit', edit_choiceboard_path(choiceboard) %></td>
+        <td><%= link_to 'Destroy', choiceboard, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Choiceboard', new_choiceboard_path %>
