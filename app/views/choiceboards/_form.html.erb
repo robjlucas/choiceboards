@@ -1,0 +1,37 @@
+<%= form_with(model: choiceboard) do |form| %>
+  <% if choiceboard.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(choiceboard.errors.count, "error") %> prohibited this choiceboard from being saved:</h2>
+
+      <ul>
+        <% choiceboard.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :user_id_id %>
+    <%= form.text_field :user_id_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image_uid %>
+    <%= form.text_field :image_uid %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sound_uid %>
+    <%= form.text_field :sound_uid %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

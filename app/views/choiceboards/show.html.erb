@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @choiceboard.user_id_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @choiceboard.name %>
+</p>
+
+<p>
+  <strong>Image uid:</strong>
+  <%= @choiceboard.image_uid %>
+</p>
+
+<p>
+  <strong>Sound uid:</strong>
+  <%= @choiceboard.sound_uid %>
+</p>
+
+<%= link_to 'Edit', edit_choiceboard_path(@choiceboard) %> |
+<%= link_to 'Back', choiceboards_path %>
