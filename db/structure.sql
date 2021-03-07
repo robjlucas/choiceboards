@@ -60,6 +60,40 @@ ALTER SEQUENCE public.choiceboards_id_seq OWNED BY public.choiceboards.id;
 
 
 --
+-- Name: options; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.options (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    name character varying,
+    image_uid character varying,
+    sound_uid character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: options_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.options_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: options_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.options_id_seq OWNED BY public.options.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -113,6 +147,13 @@ ALTER TABLE ONLY public.choiceboards ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: options id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.options ALTER COLUMN id SET DEFAULT nextval('public.options_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -133,6 +174,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.choiceboards
     ADD CONSTRAINT choiceboards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: options options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.options
+    ADD CONSTRAINT options_pkey PRIMARY KEY (id);
 
 
 --
@@ -159,6 +208,13 @@ CREATE INDEX index_choiceboards_on_user_id ON public.choiceboards USING btree (u
 
 
 --
+-- Name: index_options_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_options_on_user_id ON public.options USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -170,6 +226,14 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_remember_token ON public.users USING btree (remember_token);
+
+
+--
+-- Name: options fk_rails_1f4bd92e8f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.options
+    ADD CONSTRAINT fk_rails_1f4bd92e8f FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -188,6 +252,7 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20210228215638'),
-('20210307195018');
+('20210307195018'),
+('20210307195345');
 
 
